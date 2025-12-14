@@ -1,0 +1,83 @@
+{% extends "tracker/base.html" %}
+
+{% block content %}
+<h2>Create Project</h2>
+
+{% if messages %}
+    {% for message in messages %}
+        <div class="{% if message.tags == 'success' %}success{% else %}error{% endif %}">
+            {{ message }}
+        </div>
+    {% endfor %}
+{% endif %}
+
+<div class="card">
+    <form method="post">
+        {% csrf_token %}
+        <label for="project-name">Project Name:</label>
+        <input type="text" id="project-name" name="name" placeholder="E.g., Website Redesign" required>
+
+        <label for="project-description">Description:</label>
+        <textarea id="project-description" name="description" placeholder="A brief overview of the project goals." required></textarea>
+
+        <button type="submit">Create Project</button>
+    </form>
+</div>
+
+<h2>My Projects</h2>
+
+{% for p in projects %}
+<div class="card">
+    <h3>{{ p.name }}</h3>
+
+    {% if p.description %}
+        <p class="text-secondary">{{ p.description }}</p>
+    {% endif %}
+
+    <hr style="border: 0; border-top: 1px solid var(--border-color); margin: 20px 0 15px 0;">
+    <h4 style="margin-bottom: 15px; color: var(--text-color); font-weight: 600;">Add New Task to "{{ p.name }}"</h4>
+
+    <form method="post" action="/projects/{{ p.id }}/tasks/">
+        {% csrf_token %}
+
+        <label for="task-title-{{ p.id }}">Task Title:</label>
+        <input type="text" id="task-title-{{ p.id }}" name="title" placeholder="E.g., Implement login feature" required>
+
+        <label for="task-description-{{ p.id }}">Description:</label>
+        <textarea id="task-description-{{ p.id }}" name="description" placeholder="Details about the task." required></textarea>
+
+        <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(150px, 1fr)); gap: 15px;">
+            
+            <div>
+                <label for="priority-{{ p.id }}">Priority (1–5):</label>
+                <input type="number"
+                       id="priority-{{ p.id }}"
+                       name="priority"
+                       min="1"
+                       max="5"
+                       placeholder="1 (Highest) to 5 (Lowest)"
+                       required>
+            </div>
+            
+            <div>
+                <label for="status-{{ p.id }}">Status:</label>
+                <select name="status" id="status-{{ p.id }}">
+                    <option value="todo">Todo</option>
+                    <option value="in_progress">In Progress</option>
+                    <option value="done">Done</option>
+                </select>
+            </div>
+            
+            <div>
+                <label for="due-date-{{ p.id }}">Due Date:</label>
+                <input type="date" name="due_date" id="due-date-{{ p.id }}" required>
+            </div>
+        </div>
+
+        <button type="submit">Add Task</button>
+    </form>
+</div>
+{% empty %}
+<p class="text-secondary">No projects created yet.</p>
+{% endfor %}
+{% endblock %}

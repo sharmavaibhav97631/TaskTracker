@@ -1,0 +1,219 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Task Tracker</title>
+
+    <style>
+        :root {
+            --primary-color: #2563eb;
+            --primary-hover: #1d4ed8;
+            --navbar-bg: #1f2937;
+            --text-color: #1f2937;
+            --secondary-text: #6b7280;
+            --background: #f4f6f8;
+            --card-bg: #ffffff;
+            --border-color: #e5e7eb;
+            --success-color-bg: #d1fae5;
+            --error-color-bg: #fee2e2;
+        }
+
+        body {
+            font-family: 'Inter', system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
+            background: var(--background);
+            margin: 0;
+            padding: 0;
+            color: var(--text-color);
+            line-height: 1.6;
+        }
+
+        .navbar {
+            background: var(--navbar-bg);
+            padding: 16px 30px;
+            color: #fff;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+        }
+
+        .navbar a {
+            color: #fff;
+            margin-left: 20px;
+            text-decoration: none;
+            font-weight: 500;
+            font-size: 16px;
+            transition: color 0.2s;
+        }
+
+        .navbar a:hover {
+            color: #93c5fd;
+        }
+
+        .logout-form {
+            display: inline;
+            margin-left: 20px;
+        }
+
+        .logout-btn {
+            background: none;
+            border: none;
+            color: #fff;
+            cursor: pointer;
+            font-size: 16px;
+            font-weight: 500;
+            padding: 0;
+            transition: color 0.2s;
+        }
+
+        .logout-btn:hover {
+            color: #93c5fd;
+            text-decoration: underline;
+        }
+
+        .container {
+            max-width: 960px;
+            margin: 30px auto;
+            background: var(--card-bg);
+            padding: 30px;
+            border-radius: 12px;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.05);
+        }
+
+        h2, h3 {
+            color: var(--text-color);
+            margin-top: 0;
+            margin-bottom: 20px;
+        }
+
+        input, textarea, select {
+            width: 100%;
+            padding: 12px;
+            margin-top: 8px;
+            margin-bottom: 12px;
+            border-radius: 6px;
+            border: 1px solid var(--border-color);
+            font-size: 16px;
+            box-sizing: border-box;
+        }
+
+        label {
+            display: block;
+            margin-top: 10px;
+            font-weight: 500;
+            color: var(--secondary-text);
+            font-size: 14px;
+        }
+
+        button {
+            width: 100%;
+            padding: 12px;
+            margin-top: 15px;
+            background: var(--primary-color);
+            color: #fff;
+            border: none;
+            cursor: pointer;
+            font-weight: 600;
+            border-radius: 6px;
+            transition: background 0.2s;
+            font-size: 16px;
+        }
+
+        button:hover {
+            background: var(--primary-hover);
+        }
+
+        ul {
+            list-style-type: none;
+            padding-left: 0;
+        }
+
+        li {
+            margin-bottom: 10px;
+            padding-bottom: 10px;
+            border-bottom: 1px dashed #f1f1f1;
+        }
+        li:last-child {
+            border-bottom: none;
+            margin-bottom: 0;
+            padding-bottom: 0;
+        }
+
+        .card {
+            background: #f9fafb;
+            padding: 20px;
+            border-radius: 8px;
+            margin-bottom: 25px;
+            border: 1px solid var(--border-color);
+        }
+        
+        .error, .success {
+            padding: 12px;
+            margin-bottom: 20px;
+            border-radius: 6px;
+            font-weight: 500;
+        }
+
+        .error {
+            color: #991b1b;
+            background-color: var(--error-color-bg);
+            border: 1px solid #fca5a5;
+        }
+
+        .success {
+            color: #065f46;
+            background-color: var(--success-color-bg);
+            border: 1px solid #6ee7b7;
+        }
+        
+        .text-secondary {
+            color: var(--secondary-text);
+            font-size: 0.9em;
+        }
+
+        @media (max-width: 768px) {
+            .navbar {
+                flex-direction: column;
+                padding: 15px 15px;
+            }
+
+            .navbar div:first-child {
+                margin-bottom: 10px;
+            }
+            
+            .navbar a, .logout-form {
+                margin-left: 10px;
+                margin-right: 10px;
+                font-size: 14px;
+            }
+
+            .container {
+                margin: 15px;
+                padding: 20px;
+            }
+        }
+    </style>
+</head>
+
+<body>
+
+<div class="navbar">
+    <div><strong>Task Tracker</strong></div>
+    <div>
+        <a href="/projects/">Projects</a>
+        <a href="/dashboard/">Dashboard</a>
+
+        <form method="post" action="{% url 'logout' %}" class="logout-form">
+            {% csrf_token %}
+            <button type="submit" class="logout-btn">Logout</button>
+        </form>
+    </div>
+</div>
+
+<div class="container">
+    {% block content %}{% endblock %}
+</div>
+
+</body>
+</html>
